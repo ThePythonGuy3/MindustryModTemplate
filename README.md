@@ -1,6 +1,6 @@
 # `MindustryModTemplate`
 
-[Mindustry](https://github.com/Anuken/Mindustry) Java mod template, otherwise known as JAR-modding, complete with [`EntityAnno`](https://github.com/GlennFolker/EntityAnno) and syntax downgrader integration, works for both Android and PC.
+[Mindustry](https://github.com/Anuken/Mindustry) Java mod template, otherwise known as JAR-modding, works for both Android and PC.
 
 ## Using
 
@@ -43,13 +43,13 @@ Before going into using this template, be aware that a fair amount of Java knowl
    gradle{{"gradle/"}};
    wrapper{{"wrapper/"}};
    src{{"src/"}};
-   confictura{{"confictura/"}};
-   class root,github,workflows,assets,gradle,wrapper,src,confictura folder;
+   template{{"template/"}};
+   class root,github,workflows,assets,gradle,wrapper,src,template folder;
 
    ci(["ci.yml"]);
    wrapper-jar(["gradle-wrapper.jar"]);
    wrapper-prop(["gradle-wrapper.properties"]);
-   main(["ConficturaMod.java"]);
+   main(["ModTemplate.java"]);
    ignore([".gitignore"]);
    readme(["README.md"]);
    build(["build.gradle.kts"]);
@@ -64,7 +64,7 @@ Before going into using this template, be aware that a fair amount of Java knowl
    root-->github-->workflows-->ci;
    root-->assets;
    root-->gradle-->wrapper-->wrapper-jar & wrapper-prop;
-   root-->src-->confictura-->main;
+   root-->src-->template-->main;
    root-->ignore & readme & build & prop & wrapper-unix & wrapper-windows & icon & meta & settings;
    ```
 
@@ -86,14 +86,13 @@ Before going into using this template, be aware that a fair amount of Java knowl
    + package confictura;
 
      import mindustry.mod.*;
-   - import template.gen.*;
-   + import confictura.gen.*;
 
    - public class ModTemplate extends Mod{
    + public class ConficturaMod extends Mod{
          @Override
-         public void loadContent(){
-             EntityRegistry.register();
+         public void loadContent()
+         {
+
          }
      }
    ```
@@ -104,15 +103,6 @@ Before going into using this template, be aware that a fair amount of Java knowl
      # The mod's internal name, corresponds to `name` in `mod.json`.
    - modName = mod-template
    + modName = confictura
-     # The mod's fetched entity sources package.
-   - modFetch = template.fetched
-   + modFetch = confictura.fetched
-     # The mod's input entity sources package.
-   - modGenSrc = template.entities.comp
-   + modGenSrc = confictura.entities.comp
-     # The mod's generated sources package.
-   - modGen = template.gen
-   + modGen = confictura.gen
      # The mod's JAR file name. Desktop build is suffixed with `Desktop`.
    - modArtifact = ModTemplate
    + modArtifact = Confictura
@@ -124,7 +114,7 @@ Before going into using this template, be aware that a fair amount of Java knowl
      {
    -     "displayName": "Mod Template",
    +     "displayName": "Confictura",
-   -     "description": "Mindustry Java mod template, complete with EntityAnno and syntax downgrader integration.",
+   -     "description": "Mindustry Java mod template by GlennFolker, with EntityAnno removed.",
    +     "description": "Dive into the past of a trauma-driven uprising.",
          "version": "1.0",
          "minGameVersion": "146",
@@ -164,7 +154,7 @@ Mindustry Java mods are cross-platform, supporting PC (Windows, Mac, Linux) and 
 Desktop builds are convenient for testing, but will obviously **not** work on Android, so never include this in your releases. Desktop JARs have `Desktop` suffixed to their name, e.g. `ModTemplateDesktop.jar`. Here's how you can build the mod:
 1. Open your terminal, and `cd` to your local copy of the mod.
 2. Ensure your internet connection on first or clean builds, as the project will try to fetch prerequisites from the internet.
-3. Run `gradlew jar` *(replace `gradlew` with `./gradlew` on Mac/Linux)*. This should create a JAR inside `build/libs/` that you can copy over to the Mindustry mods folder to install it.
+3. Run `gradlew jar` *(replace `gradlew` with `./gradlew` on Mac/Linux/PowerShell)*. This should create a JAR inside `build/libs/` that you can copy over to the Mindustry mods folder to install it.
 4. You can also then run `gradlew install` to automatically install the mod JAR, or even `gradlew jar install` to do both compiling and installing at once.
 
 ### Android Build
@@ -191,3 +181,7 @@ Android builds are automated on the CI hosted by GitHub Actions, so you should b
 ## License
 
 The project is licensed under [GNU GPL v3](/LICENSE).
+
+## Credits
+
+Original template by [Glenn Folker](https://github.com/GlennFolker)

@@ -1,7 +1,6 @@
 import arc.files.*
 import arc.util.*
 import arc.util.serialization.*
-import ent.*
 import java.io.*
 
 buildscript{
@@ -20,19 +19,14 @@ buildscript{
 
 plugins{
     java
-    id("com.github.GlennFolker.EntityAnno") apply false
 }
 
 val arcVersion: String by project
 val mindustryVersion: String by project
 val mindustryBEVersion: String by project
-val entVersion: String by project
 
 val modName: String by project
 val modArtifact: String by project
-val modFetch: String by project
-val modGenSrc: String by project
-val modGen: String by project
 
 val androidSdkVersion: String by project
 val androidBuildVersion: String by project
@@ -46,10 +40,6 @@ fun arc(module: String): String{
 
 fun mindustry(module: String): String{
     return "com.github.Anuken.Mindustry$module:$mindustryVersion"
-}
-
-fun entity(module: String): String{
-    return "com.github.GlennFolker.EntityAnno$module:$entVersion"
 }
 
 allprojects{
@@ -67,17 +57,11 @@ allprojects{
         }
     }
 
-    dependencies{
-        // Downgrade Java 9+ syntax into being available in Java 8.
-        annotationProcessor(entity(":downgrader"))
-    }
-
     repositories{
         // Necessary Maven repositories to pull dependencies from.
         mavenCentral()
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
         maven("https://oss.sonatype.org/content/repositories/releases/")
-        maven("https://raw.githubusercontent.com/GlennFolker/EntityAnnoMaven/main")
 
         // Use Zelaux's non-buggy repository for release Mindustry and Arc builds.
         if(!useJitpack) maven("https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository")
@@ -98,22 +82,7 @@ allprojects{
 }
 
 project(":"){
-    apply(plugin = "com.github.GlennFolker.EntityAnno")
-    configure<EntityAnnoExtension>{
-        modName = project.properties["modName"].toString()
-        mindustryVersion = project.properties[if(useJitpack) "mindustryBEVersion" else "mindustryVersion"].toString()
-        isJitpack = useJitpack
-        revisionDir = layout.projectDirectory.dir("revisions").asFile
-        fetchPackage = modFetch
-        genSrcPackage = modGenSrc
-        genPackage = modGen
-    }
-
     dependencies{
-        // Use the entity generation annotation processor.
-        compileOnly(entity(":entity"))
-        add("kapt", entity(":entity"))
-
         compileOnly(mindustry(":core"))
         compileOnly(arc(":arc-core"))
     }
